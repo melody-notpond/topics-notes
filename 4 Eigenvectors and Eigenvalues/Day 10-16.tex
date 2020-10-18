@@ -1,0 +1,195 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{subcaption, enumerate}
+\usepackage{bbold}
+\usepackage{polynom}
+\usepackage{xfrac}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corot}{Corollary}[theorem]
+\newtheorem{lemma}{Lemma}
+\newtheorem{corol}{Corollary}[lemma]
+\newtheorem{proposition}{Proposition}
+\newtheorem{corop}{Corollary}[proposition]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{exampled}{Example}[definition]
+\newtheorem{examples}{Example}[section]
+\newtheorem*{notation}{Notation}
+
+\newcommand{\dab}
+{
+	\begin{tikzpicture}[scale=0.04]
+		% head
+		\draw[thick] (0, 0) circle (3cm);
+
+		% bent arm
+		\draw[thick, rotate around={15 : (0, 0)}] (-3, 0) -- (-3.7, -2) -- (4.1, -1.1);
+
+		% extended arm
+		\draw[thick, rotate=20] (3, 0) -- (7, 2);
+	\end{tikzpicture}
+}
+\newcommand{\st}{\text{ s.t. }}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\usepackage{fullpage}
+
+\title{Eigenstuff Day 1 \\ with Dr Nevard}
+\author{Laura Gallo}
+\date{October 16, 2020}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+For a given $T\in\mathcal{L}(V)$, when can we choose a basis in $V$ such that $T$ has a diagonal matrix? Ie, we want to find some basis such that:
+\begin{equation*}
+	D=\mathcal{M}(T,\{v_1,v_2,\dots,v_n\})=\left(
+		\begin{matrix}
+			\lambda_1 & 0 & 0 & 0 \\
+			0 & \lambda_2 & 0 & 0 \\
+			0 & 0 & \ddots & 0 \\
+			0 & 0 & 0 & \lambda_n
+		\end{matrix}
+	\right)
+\end{equation*}
+ie, $Tv_k=\lambda_kv_k$ for basis vector $v_k$. This process is called \emph{diagonalisation}, and to do this we must explore eigenvectors and eigenvalues.
+
+\begin{definition}
+	Given a linear transform $T:V\rightarrow V$, an \emph{eigenvector} is a nonzero vector $v$ such that $Tv=\lambda v$ for some scalar $\lambda$. $\lambda$ is the corresponding \emph{eigenvalue}.
+\end{definition}
+
+\noindent
+Note that a linear transformation has an eigenvalue of 0 if and only if it has a nontrivial null space.
+
+\begin{definition}
+	Given $T\in\mathcal{L}(V)$, the \emph{eigenspace} corresponding to $\lambda$ is the vector space $\{v:Tv=\lambda v\}$. The proof that this is a vector space is trivial and left as an exercise to the reader. Note that the dimension of an eigenspace can be anywhere between 1 and $\dim V$.
+\end{definition}
+
+\section{Examples of Finding Eigenstuff}
+\begin{examples}
+	Let $V=C^\infty(\mathbb{R})$ (the vector space of all functions that are infinitely differentiable). Let $T(f)=f'$. To find the eigenfunctionss and eigenvalues, we can solve the differental equation:
+	$$Tf=f'=\lambda f$$
+	The solution to this differential equation is $f=ae^{\lambda x}$, so for a given real eigenvalue $\lambda$, its eigenspace consists of all functions of the form $ae^{\lambda x}$. This means that every real number is an eigenvalue.
+\end{examples}
+
+\begin{examples}
+	Let $V=\{\text{$C^\infty$ functions of compact support}\}$, $Tf=\int_0^xf(t)dt$. Compact support means that a function $f$ is 0 outside of $[-M, M]$. To find the eigenvectors and eigenvalues, we again solve a differential equation:
+	$$Tf=\int_0^xf(t)dt=\lambda f$$
+	$$f=\lambda f'$$
+	$$f(x)=ae^\frac{x}{\lambda}$$
+	However, plugging in 0 into the integral yields 0, which means $a=0$. Since 0 cannot be an eigenvector by definition, this linear transform has no eigenvectors or eigenvalues.
+\end{examples}
+
+\begin{examples}
+	Let $V=\mathbb{R}^2$, \begin{math}
+		T\left(
+			\begin{matrix}
+				x \\
+				y
+			\end{matrix}
+		\right) = \left(
+			\begin{matrix}
+				\cos\theta & -\sin\theta \\
+				\sin\theta & \cos\theta
+			\end{matrix}
+		\right) \left(
+			\begin{matrix}
+				x \\
+				y
+			\end{matrix}
+		\right)
+	\end{math}. For $\theta=k\pi$ for some integer $k$, the matrix simplifies to $-I$, so the eigenvalue is -1 and the eigenvectors are all vectors in $\mathbb{R}^2$ except the zero vector. For nontrivial $\theta$, we can do the following to find the eigenvectors and eigenvalues:
+	\begin{equation*}
+		\left(
+			\begin{matrix}
+				\cos\theta & -\sin\theta \\
+				\sin\theta & \cos\theta
+			\end{matrix}
+		\right) \left(
+			\begin{matrix}
+				x \\
+				y
+			\end{matrix}
+		\right)=\lambda \left(
+			\begin{matrix}
+				x \\
+				y
+			\end{matrix}
+		\right)
+	\end{equation*}
+	\begin{equation*}
+		\left(
+			\begin{matrix}
+				\cos\theta-\lambda & -\sin\theta \\
+				\sin\theta & \cos\theta-\lambda
+			\end{matrix}
+		\right) \left(
+			\begin{matrix}
+				x \\
+				y
+			\end{matrix}
+		\right)= \left(
+			\begin{matrix}
+				0 \\
+				0
+			\end{matrix}
+		\right)
+	\end{equation*}
+	\begin{align*}
+		(\cos\theta-\lambda)x&=\lambda y \\
+		(\sin\theta)x&=(\lambda-\cos\theta)y
+	\end{align*}
+	\begin{align*}
+		y&=\left(\frac{\cos\theta-\lambda}{\sin\theta}\right)x \\
+		x&=-\left(\frac{\cos\theta-\lambda}{\sin\theta}\right)^2x \\
+		0&=\left(1+\left(\frac{\cos\theta-\lambda}{\sin\theta}\right)\right)x
+	\end{align*}
+	$$x=y=0$$
+	Since 0 is not an eigenvector by definition, $T$ has no eigenvectors or eigenvalues.
+\end{examples}
+
+\begin{examples}
+	Let $V=\mathbb{C}$, $Tv=e^{i\theta}v$. Then every vector is an eigenvector by definition with a corresponding eigenvalue of $e^{i\theta}$.
+\end{examples}
+
+\section{Finding Eigenvalues}
+We have $Tv=\lambda v$ if and only if $(T-\lambda I)v=0$. This means that the linear transform $T-\lambda I$ has a nontrivial null space, which means that the transform is not invertible and thus its corresponding matrix is singular. Let $A=\mathcal{M}(T)$ for some basis, then $\lambda$ is an eigenvalue if and only if $\det(\lambda I-A)=0$. This equation is the \emph{characteristic equation} of the matrix $A$, and the left hand side is the \emph{characteristic polynomial}.
+
+\begin{examples}
+	\begin{math}
+		A=\left(
+			\begin{matrix}
+				2 & 3 \\
+				3 & 5
+			\end{matrix}
+		\right)
+	\end{math}
+	\begin{equation*}
+		\left|
+			\begin{matrix}
+				\lambda - 2 & -3 \\
+				-3 & \lambda - 5
+			\end{matrix}
+		\right| = (\lambda-2)(\lambda-5)-9=\lambda^2-7\lambda+1
+	\end{equation*}
+	$$\lambda=\frac{7\pm3\sqrt{5}}{2}$$
+\end{examples}
+
+\end{document}
+
