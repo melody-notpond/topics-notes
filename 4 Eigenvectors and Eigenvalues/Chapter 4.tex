@@ -1,0 +1,199 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{subcaption, enumerate}
+\usepackage{bbold}
+\usepackage{polynom}
+\usepackage{xfrac}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corot}{Corollary}[theorem]
+\newtheorem{lemma}{Lemma}
+\newtheorem{corol}{Corollary}[lemma]
+\newtheorem{proposition}{Proposition}
+\newtheorem{corop}{Corollary}[proposition]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{exampled}{Example}[definition]
+\newtheorem{examples}{Example}[section]
+\newtheorem*{notation}{Notation}
+
+\newcommand{\dab}
+{
+	\begin{tikzpicture}[scale=0.04]
+		% head
+		\draw[thick] (0, 0) circle (3cm);
+
+		% bent arm
+		\draw[thick, rotate around={15 : (0, 0)}] (-3, 0) -- (-3.7, -2) -- (4.1, -1.1);
+
+		% extended arm
+		\draw[thick, rotate=20] (3, 0) -- (7, 2);
+	\end{tikzpicture}
+}
+\newcommand{\st}{\text{ s.t. }}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\usepackage{fullpage}
+
+\title{Eigenstuff Notes \\ with Dr Nevard}
+\author{Laura Gallo}
+\date{November 10, 2020}
+
+\begin{document}
+\maketitle
+
+\section{Traces}
+Let $f(\lambda)=\det(\lambda I - A)$ for a given matrix $A$. From this we have $f(0)=\det(-A)=(-1)^n\lambda_1\lambda_2\cdots\lambda_n$.
+
+\begin{definition}
+	The \emph{trace} of a matrix is defined as $\text{tr } A = \lambda_1+\lambda_2+\dots+\lambda_n$.
+\end{definition}
+
+\begin{exercise}
+	Prove that $\text{tr } A = \sum_{i=1}^n a_{ii}$
+\end{exercise}
+
+\section{Diagonalisation}
+Suppose $A$ has $n$ linearly independent eigenvectors $v_1, v_2, \dots v_n$. Let
+\begin{math}
+	C=\left(
+		\begin{matrix}
+			v_1 & v_2 & \dots & v_n
+		\end{matrix}
+	\right)
+\end{math}
+. Then for basis vectors $e_k$, $e_k \xmapsto{C} v_k \xmapsto{A} \lambda_kv_k \xmapsto{C^{-1}} \lambda_ke_k$. Hence, $D=C^{-1}AC$ is a diagonal matrix, where:
+\begin{equation*}
+	D = \left(
+		\begin{matrix}
+			\lambda_1 & 0 & \dots & 0 \\
+			0 & \lambda_2 & \dots & 0 \\
+			0 & 0 & \ddots & 0 \\
+			0 & 0 & \dots & \lambda_n
+		\end{matrix}
+	\right)
+\end{equation*}.
+
+\subsection{Conditions for Being Diagonalisable}
+\begin{proposition}
+	If an $n$ by $n$ matrix has $n$ linearly independant eigenvectors, $\exists C \st C^{-1}AC$ is diagonal (ie, $A$ is diagonalisable).
+\end{proposition}
+\noindent
+Note: if $v_1, v_2, \dots, v_n$ are orthonormal, then $C^{-1} = C^T$.
+
+\begin{exercise}
+	Prove if $\exists C \st C^{-1}AC$ is diagonal, $A$ has $n$ linearly independent eigenvectors.
+\end{exercise}
+
+\begin{theorem}[Spectral Theorem]
+	In $\mathbb{C}$, a matrix is diagonalisable iff it is normal (it commutes with its adjoint). In a simpler case, in $\mathbb{R}$, a matrix is diagonalisable iff it is symmetric.
+\end{theorem}
+
+\subsection{Similarity Transformations}
+For a given matrix $A$, the transformation $C^{-1}AC$ is called a \emph{similarity transform}. $A$ and $C^{-1}AC$ represent the same linear transform with respect to different bases.
+\begin{proposition}
+	This is an equivalence relation; ie, $A \sim B$ if $\exists C \st B=C^{-1}AC$.
+	\begin{proof}
+		Split the proof into three steps
+		\begin{enumerate}
+			\item $A \sim A$ \\
+				Let $C=I$
+			\item if $A \sim B$, $B \sim A$ \\
+				Let $\tilde C = C^{-1}$
+			\item if $A \sim B \wedge B \sim E$, $A \sim E$ \\
+				$B=C^{-1}AC$ \\
+				$E=F^{-1}BF=F^{-1}C^{-1}ACF=(CF)^{-1}ACF$
+		\end{enumerate}
+
+		$\therefore$ This is an equivalence relation. \dab
+	\end{proof}
+\end{proposition}
+
+\begin{exercise}
+	\begin{math}
+		\left(
+			\begin{matrix}
+				\lambda_1 & 0 & \dots & 0 \\
+				0 & \lambda_2 & \dots & 0 \\
+				0 & 0 & \ddots & 0 \\
+				0 & 0 & \dots & \lambda_n
+			\end{matrix}
+		\right) = \left(
+			\begin{matrix}
+				\mu_1 & 0 & \dots & 0 \\
+				0 & \mu_2 & \dots & 0 \\
+				0 & 0 & \ddots & 0 \\
+				0 & 0 & \dots & \mu_n
+			\end{matrix}
+		\right)
+	\end{math} iff $\forall k, \lambda_k=\mu_k$
+\end{exercise}
+
+\begin{proposition}
+	Similarity transforms preserve characteristic polynomials.
+	\begin{proof}
+		$\det(\lambda I-A)=\det C^{-1}\det(\lambda I-A)\det C=\det(\lambda C^{-1}IC - C^{-1}AC)=\det(\lambda I-C^{-1}AC)$ \dab
+	\end{proof}
+\end{proposition}
+
+\subsection{Jordan Canonical Form}
+Not every matrix is diagonalisable; however, we can find a matrix $J$ such that $A \sim J$, where
+\begin{equation*}
+	J = \left(
+		\begin{matrix}
+			B_1 & 0 & \dots & 0 \\
+			0 & B_2 & \dots & 0 \\
+			0 & 0 & \ddots & 0 \\
+			0 & 0 & \dots & B_n
+		\end{matrix}
+	\right), B = \left(
+		\begin{matrix}
+			\lambda_1 & 1 & 0 & \dots & 0 \\
+			0 & \lambda_2 & 1 & \dots & 0 \\
+			0 & 0 & \lambda_3 & \ddots & 0 \\
+			0 & 0 & 0 & \ddots & 1 \\
+			0 & 0 & 0 & \dots & \lambda_n \\
+		\end{matrix}
+	\right)
+\end{equation*}
+
+\begin{exercise}
+	Let
+	\begin{math}
+		U = \left(
+			\begin{matrix}
+				0 & 1 & 0 & \dots & 0 & 0 \\
+				0 & 0 & 1 & \dots & 0 & 0 \\
+				0 & 0 & 0 & \dots & 1 & 0 \\
+				0 & 0 & 0 & \dots & 0 & 0
+			\end{matrix}
+		\right)
+	\end{math}. Show that $\exists k \in \mathbb{N} \st U^k=0$. (We call this property nilpotency.)
+\end{exercise}
+
+\section{Cayley-Hamilton Theorem}
+\begin{theorem}
+	Every square matrix satisfies its own characteristic polynomial; ie, if $P(t)=\det(tI-A)$, then $P(A)=0$.
+\end{theorem}
+
+\section{Eigenstuff in an Inner Product Space}
+
+
+\end{document}
+
+
