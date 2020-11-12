@@ -1,0 +1,148 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{subcaption, enumerate}
+\usepackage{bbold}
+\usepackage{polynom}
+\usepackage{xfrac}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corot}{Corollary}[theorem]
+\newtheorem{lemma}{Lemma}
+\newtheorem{corol}{Corollary}[lemma]
+\newtheorem{proposition}{Proposition}
+\newtheorem{corop}{Corollary}[proposition]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{exampled}{Example}[definition]
+\newtheorem{examples}{Example}[section]
+\newtheorem*{notation}{Notation}
+
+\newcommand{\dab}
+{
+	\begin{tikzpicture}[scale=0.04]
+		% head
+		\draw[thick] (0, 0) circle (3cm);
+
+		% bent arm
+		\draw[thick, rotate around={15 : (0, 0)}] (-3, 0) -- (-3.7, -2) -- (4.1, -1.1);
+
+		% extended arm
+		\draw[thick, rotate=20] (3, 0) -- (7, 2);
+	\end{tikzpicture}
+}
+\newcommand{\st}{\text{ s.t. }}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\usepackage{fullpage}
+
+\title{Topology \\ with Dr Nevard}
+\author{Laura Gallo}
+\date{November 12, 2020}
+
+\begin{document}
+\maketitle
+
+\section{Topologies and Metrics}
+\begin{definition}
+	Let $X$ be a set. A collection of subsets of $x$, $\mathcal{T}$, is a \emph{topology} on $X$ if:
+	\begin{enumerate}
+		\item $\emptyset \in \mathcal{T}$
+		\item if $U_1, U_2 \in \mathcal{T}, U_1 \cap U_2 \in \mathcal{T}$
+		\item if $\{U_\alpha\} \subset \mathcal{T}, \bigcup_\alpha U_\alpha \in \mathcal{T}$
+	\end{enumerate}
+	\noindent
+	Elements of $\mathcal{T}$ are called \emph{open sets}.
+\end{definition}
+
+\begin{exampled}
+	For $\mathbb{R}$, the set of all open intervals $(a, b)$ and their unions is a topology. This is the standard topology on $\mathbb{R}$
+\end{exampled}
+\begin{exampled}
+	For $\mathbb{R}^n$, the set of all open intervals $(a_1, b_1) \times (a_2, b_2) \times \dots \times (a_n, b_n)$ and their unions is a topology. This is the standard topology on $\mathbb{R}^n$
+\end{exampled}
+
+\begin{definition}
+	A metric on a topology $\mathcal{T}$ is a function $\mu: \mathcal{T}\times\mathcal{T} \rightarrow [0, \infty)$ such that
+	\begin{enumerate}
+		\item $\mu(x, y) = 0 \Leftrightarrow x=y$
+		\item $\mu(x, y) = \mu(y, x)$
+		\item $\mu(x, y) \leq \mu(x, z) + \mu(z, y)$
+	\end{enumerate}
+\end{definition}
+
+\begin{exampled}
+	$\mathbb{R}$, $d(x, y)=|x-y|$
+\end{exampled}
+\begin{exampled}
+	$\mathbb{R}^n$, $d(x, y)=\sqrt{\sum_{i=0}^n (x_i-y_i)^2}$
+\end{exampled}
+\begin{exampled}
+	$\ell^\infty$ (the set of infinite sequences), $\sup_{i\in \mathbb{N}}|x_i-y_i|$
+\end{exampled}
+\begin{exampled}
+	$L^\infty$, $\sup_{x\in\text{ domain}} |f(x)-g(x)|$
+\end{exampled}
+\begin{exampled}
+	$L^p$, $(\int_X |f(t)-g(t)|^pdt)^{\frac{1}{p}}$
+\end{exampled}
+	\noindent
+	The above examples have metrics that are also norms on the given vector space; however, a metric does not necessarily have to be a norm. The below examples are valid metrics on the standard topology on $\mathbb{R}$:
+\begin{exampled}
+	$d(x, y) = \frac{|x-y|}{1 + |x-y|}$
+\end{exampled}
+\begin{exampled}
+	\begin{math}
+		d(x, y) =
+		\begin{cases}
+			1 & \text{if $x \neq y$} \\
+			0 & \text{if $x = y$}
+		\end{cases}
+	\end{math}
+\end{exampled}
+
+\section{Neighbourhoods}
+If we have a collection of open sets $\{U_\alpha\}$, $x\in U_\alpha$ means $U_\alpha$ is a neighbourhood of $x$. If $U_\alpha \subset U_\beta$, $U_\alpha$ is a smaller neighbourhood. We can say that $y_n \rightarrow x$ if $\forall$ neighbourhoods $U_\alpha$ of $x$, given $U_{\alpha_0}$, $\exists N$ s.t. $n > N \Rightarrow y_n \in U_\alpha$.
+
+\section{Bases}
+\begin{definition}
+	A base for a topology $\mathcal{T}$ is a subset $\mathcal{B} \subset \mathcal{T}$ such that the set of all unions of $\mathcal{B}$ is $\mathcal{T}$.
+\end{definition}
+
+\begin{exampled}
+	The standard topology on $\mathbb{R}$ has the countable base $\mathcal{B}=\{(r, s) : r, s \in \mathbb{Q}\}$
+\end{exampled}
+\begin{exampled}
+	The standard topology on $\mathbb{R}^n$ has a similar countable base $\mathcal{B}=\{(a_1, b_1)\times(a_2, b_2)\times\dots\times(a_n, b_n)\}$.
+\end{exampled}
+\begin{exampled}
+	The standard topology on $\mathbb{R}^n$ has another base $\mathcal{B}_r(x)=\{y\in\mathbb{R}^n:||x-y||<r\}$
+\end{exampled}
+
+\noindent
+If $X$ is a normed space with norm $||\cdot||$, then the base for the topology of $X$ is $\mathcal{B}_r(x)=\{y\in X:||x-y||<r\}$.
+
+\section{Equivalent Metrics/Norms}
+\begin{definition}
+	Two metrics/norms are equivalent if they yield identical topologies.
+\end{definition}
+\begin{exampled}
+	In $\mathbb{R}$, $d_1(x, y)=|x-y|$ and $d_2(x, y)=\frac{|x-y|}{1+|x-y|}$ are equivalent. This is left as an exercise to the reader.
+\end{exampled}%%%%
+
+\end{document}
+
+
