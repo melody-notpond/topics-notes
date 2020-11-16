@@ -1,0 +1,154 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{subcaption, enumerate}
+\usepackage{bbold}
+\usepackage{polynom}
+\usepackage{xfrac}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corot}{Corollary}[theorem]
+\newtheorem{lemma}{Lemma}
+\newtheorem{corol}{Corollary}[lemma]
+\newtheorem{proposition}{Proposition}
+\newtheorem{corop}{Corollary}[proposition]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{exampled}{Example}[definition]
+\newtheorem{examples}{Example}[section]
+\newtheorem*{notation}{Notation}
+\newtheorem*{exercise}{Exercise}
+
+\newcommand{\dab}
+{
+	\begin{tikzpicture}[scale=0.04]
+		% head
+		\draw[thick] (0, 0) circle (3cm);
+
+		% bent arm
+		\draw[thick, rotate around={15 : (0, 0)}] (-3, 0) -- (-3.7, -2) -- (4.1, -1.1);
+
+		% extended arm
+		\draw[thick, rotate=20] (3, 0) -- (7, 2);
+	\end{tikzpicture}
+}
+\newcommand{\st}{\text{ s.t. }}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\usepackage{fullpage}
+
+\title{Topology \\ with Dr Nevard}
+\author{Laura Gallo}
+\date{November 16, 2020}
+
+\begin{document}
+\maketitle
+
+\section{Interiors and Exteriors}
+\begin{definition}
+	Given $S \subset X$, the \emph{interior} of $S$ is:
+	$$S^\circ=\bigcup_\text{$U \subset S$, $U$ open}U$$
+\end{definition}
+\begin{exampled}
+	For $S=[0, 1]$ in the standard topology for $\mathbb{R}$, the interior of $S$ is $S^\circ=(0, 1)$.
+\end{exampled}
+\begin{exampled}
+	For $\mathbb{Q}$ in the standard topology for $\mathbb{R}$, $Q^\circ=\emptyset$.
+\end{exampled}
+
+\begin{definition}
+	The \emph{exterior} of a set $S$ is $\text{ext } S =(S^c)^\circ$.
+\end{definition}
+\begin{exampled}
+	$\text{ext } [0, 1] = (-\infty, 0) \cup (1, \infty)$.
+\end{exampled}
+
+\section{Closed Sets}
+\begin{definition}
+	A \emph{closed set} is a set whose complement is an open set; ie, a set $C$ is closed if and only if $C^c$ is open. \\
+	Note: a set can be both open and closed, and also neither open nor closed (example: $\emptyset$ and $X$ for a topology on $X$ are both open and closed)
+\end{definition}
+\noindent
+We have $\bigcap_\alpha U_\alpha^c=(\bigcup_\alpha U_\alpha)^c$, so closed sets are closed under intersections because open sets are closed under unions. Note, however, that open sets are not necessarily closed under intersections, and vice versa. For example, take $S_n=[-\frac{1}{n}, \frac{n+1}{n}]$ in the standard topology on $\mathbb{R}$:
+\begin{align*}
+	\bigcap_{n=1}^\infty S_n = [0, 1] && \text{(closed $\rightarrow$ closed)} \\
+	\bigcup_{n=1}^\infty S_n = [0, 1] && \text{(open $\rightarrow$ closed)} \\
+\end{align*}
+
+\section{Closure}
+\begin{definition}
+	The \emph{closure} of $S$ is:
+	$$\overline{S}=\bigcap_\text{$C \supset S$, $C$ closed} C$$
+\end{definition}
+\begin{exampled}
+	We claim $\overline{\mathbb{Q}} = \mathbb{R}$.
+
+	\begin{proof}
+		Assume $\overline{\mathbb{Q}} \neq \mathbb{R}$; ie, there is some $x \in \mathbb{R}$ such that $x \notin \overline{\mathbb{Q}}$. \\
+		We can find a closed set $C \supset \mathbb{Q}$ such that $x \notin C$. \\
+		Let $U=C^c$. $U$ is an open set by definition. \\
+		We can say $(x-\delta, x+\delta) \subset U$. \\
+		This is a contradiction since this interval contains a rational number. \\
+		Therefore, $\overline{\mathbb{Q}} = \mathbb{R}$. \dab
+	\end{proof}
+\end{exampled}
+
+\begin{definition}
+	If $S \subset X$ such that $\overline{S}=X$, then $S$ is \emph{dense} in $X$.
+\end{definition}
+
+\section{Limit Points and Isolated Points}
+\begin{definition}
+	A \emph{limit point} of a set $S$ is an element of $S$, $x$, such that every open set containing $x$ contains other points of $S$
+\end{definition}
+\begin{exampled}
+	$S=\{\frac{1}{n} : n \in\mathbb{N}\}$, 0 is a limit point.
+\end{exampled}
+
+\begin{definition}
+	An \emph{isolated point} of a set $S$ is a point that is not a limit point.
+\end{definition}
+
+\begin{proposition}
+	A set is closed if and only if it contains all of its limit points
+\end{proposition}
+
+\section{Boundaries}
+\begin{definition}
+	The \emph{boundary} of a set $S$ is $\partial S = \overline{S} \cap \overline{S^c}$.
+\end{definition}
+\begin{exampled}
+	$\partial \mathbb{Q}=\mathbb{R}$
+\end{exampled}
+
+\begin{exercise}
+	Show that the boundary of $S=\{(x,y)\in\mathbb{R}^2 : x^2+y^2<1\}$ is $\{(x, y)\in\mathbb{R}^2 : x^2 + y^2 = 1\}$.
+\end{exercise}
+
+\section{Generalisation of the Definition of Limits}
+We want to be able to say things such as $\lim_{x\rightarrow a} f(x)=L$ within a topological space. From least abstract to most abstract, we can state the following definitions:
+\begin{itemize}
+	\item We can make $f(x)$ arbitrarily close to $L$ by making $x$ sufficiently close to $a$, but not necessarily equal to $a$.
+	\item In normed spaces $X$, $Y$:
+		$$\forall \varepsilon > 0 \exists \delta > 0 \st \forall x \in X, 0<||x-a||<\delta \Rightarrow ||f(x)-L||<\varepsilon$$
+	\item In metric spaces $X$, $Y$:
+		$$\forall \varepsilon > 0 \exists \delta > 0 \st \forall x \in X, 0<d(x, a)<\delta \Rightarrow d(f(x), L)<\varepsilon$$
+	\item In topological spaces $X$, $Y$:
+		$$\forall V \subset Y \text{ open containing $L$} \exists U \subset X \text{ open containing x} \st z\in U, x \neq z \Rightarrow f(z) \in V$$
+\end{itemize}
+
+\end{document}
+
